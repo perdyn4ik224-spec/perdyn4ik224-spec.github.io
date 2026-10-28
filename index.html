@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meepo</title>
+<style>
+:root{--bg:#fff;--ink:#000;--acc:#e0197d;--dim:#8a8a8a;--line:#d9d9d9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--ink:#fff;--acc:#ff4fa8;--dim:#8a8a8a;--line:#2a2a2a}:root:has(#thc:checked){--bg:#fff;--ink:#000;--acc:#e0197d;--dim:#8a8a8a;--line:#d9d9d9}}
+@media (prefers-color-scheme:light),(prefers-color-scheme:no-preference){:root:has(#thc:checked){--bg:#000;--ink:#fff;--acc:#ff4fa8;--dim:#8a8a8a;--line:#2a2a2a}}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:radial-gradient(circle at 18% 22%,color-mix(in srgb,var(--acc) 38%,transparent),transparent 45%),radial-gradient(circle at 82% 78%,color-mix(in srgb,var(--acc) 24%,transparent),transparent 50%),var(--bg);color:var(--ink);font-family:"Trebuchet MS",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
+.ctl{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;display:flex;gap:8px;z-index:5}
+.ctl label{display:inline-block;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;font:700 13px "Trebuchet MS",system-ui,sans-serif;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:9px 14px;cursor:pointer}
+.ctl label:focus-visible,h1 label:focus-visible,.dots:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.stage{width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 24px}
+body:has(#vwc:checked){padding:64px 12px 24px}
+#vwc:checked~.stage{width:390px;max-width:100%;height:760px;max-height:calc(100vh - 100px);min-height:0;border:2px solid var(--line);border-radius:38px}
+.wrap{display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 40px 22px;border-radius:30px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+h1{font:900 clamp(40px,11vw,72px)/.9 "Arial Black",Impact,sans-serif;letter-spacing:-.04em;margin:0}
+#vwc:checked~.stage h1{font-size:52px}
+h1{cursor:pointer;user-select:none;-webkit-user-select:none}
+h1:focus-visible{outline:3px solid var(--acc);outline-offset:6px;border-radius:8px}
+@keyframes glt{0%{transform:translate(-3px,1px) skewX(-8deg);text-shadow:3px 0 #ff2e93,-3px 0 #00e5ff}20%{transform:translate(4px,-1px) skewX(6deg);clip-path:inset(20% 0 40% 0);text-shadow:-4px 0 #ff2e93,4px 0 #00e5ff}40%{transform:translate(-2px,2px);clip-path:none;text-shadow:2px 0 #ff2e93,-2px 0 #00e5ff}60%{transform:translate(3px,0) skewX(-4deg);clip-path:inset(55% 0 10% 0);text-shadow:-3px 0 #ff2e93,3px 0 #00e5ff}80%{transform:translate(-1px,-1px);clip-path:none;text-shadow:1px 0 #ff2e93}100%{transform:none;clip-path:none;text-shadow:none}}
+h1{animation:gltloop 4.6s infinite}
+.dots{display:inline-flex;gap:7px;padding:14px 10px;margin-top:6px;background:none;border:0;cursor:pointer;border-radius:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--dim);display:block;transition:background .25s}
+.dots:hover i,.dots:focus-visible i,.wrap.open .dots i{background:var(--acc)}
+ul{list-style:none;margin:0 auto;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 20px;max-width:170px;overflow:hidden;min-height:0}
+.al{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s ease;width:0;min-width:100%}
+.wrap.open .al{grid-template-rows:1fr}
+.in{overflow:hidden;min-height:0;visibility:hidden;transition:visibility 0s .4s}
+.wrap.open .in{visibility:visible;transition-delay:0s}
+.lk{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:12px;opacity:0;transition:opacity .3s .2s}
+.wrap.open .lk{opacity:1}
+.lk a{font:700 13px "Trebuchet MS",system-ui,sans-serif;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;min-width:112px;text-align:center}
+.lk a:hover{border-color:var(--acc);color:var(--acc)}
+.lk a small{display:block;font-weight:400;font-size:10px;line-height:1.2;opacity:.65}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.09;image-rendering:pixelated}
+.crt{position:fixed;inset:0;z-index:4;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,color-mix(in srgb,var(--ink) 6%,transparent) 2px 3px)}
+.sweep{position:fixed;left:0;right:0;top:-160px;height:160px;z-index:3;pointer-events:none;background:linear-gradient(transparent,color-mix(in srgb,var(--ink) 5%,transparent),transparent);animation:sweep 7s linear infinite}
+@keyframes sweep{to{transform:translateY(calc(100vh + 160px))}}
+.stage{position:relative;z-index:1}
+.st{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;opacity:.85;margin-top:8px}
+.st i{width:7px;height:7px;border-radius:50%;background:#2ecc71;box-shadow:0 0 8px #2ecc71;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+#intro{position:fixed;inset:0;z-index:10;background:var(--bg);display:flex;align-items:center;justify-content:center;font:400 clamp(22px,7vw,30px) Georgia,"Times New Roman",Times,serif;letter-spacing:.02em;color:var(--ink);animation:introOut .5s ease 2.7s forwards}
+#intro span{position:absolute;text-align:center}
+.i1{animation:i1 1.4s steps(1,end) forwards}
+.i1::after{content:".";animation:dots 1.4s steps(1,end)}
+.i2{opacity:0;animation:i2 1.3s steps(1,end) 1.4s forwards}
+@keyframes dots{25%{content:".."}50%{content:"..."}75%{content:"...."}}
+@keyframes i1{0%{opacity:1}99%{opacity:1}100%{opacity:0}}
+@keyframes i2{from,to{opacity:1}}
+@keyframes introOut{to{opacity:0;visibility:hidden;pointer-events:none}}
+@media (prefers-reduced-motion:reduce){#intro{display:none}.sweep{display:none}.st i{animation:none}}
+.lk a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+li{font:700 15px "Trebuchet MS",system-ui,sans-serif;color:var(--acc);opacity:0;transform:translateY(-6px);transition:opacity .3s,transform .3s}
+.wrap.open li{opacity:1;transform:none}
+.wrap.open li:nth-child(2){transition-delay:.06s}
+.wrap.open li:nth-child(3){transition-delay:.12s}
+.wrap.open li:nth-child(4){transition-delay:.18s}
+.wrap{animation:bob 5s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.wrap{animation:none}li,.dots i,body{transition:none}}
+#tg{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+.dots{-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#intro{pointer-events:none}
+#tg:checked~.stage .dots i{background:var(--acc)}
+#tg:checked~.stage .al{grid-template-rows:1fr}
+#tg:checked~.stage .in{visibility:visible;transition-delay:0s}
+#tg:checked~.stage .lk{opacity:1}
+#tg:checked~.stage li{opacity:1;transform:none}
+.chk{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+h1 label{cursor:pointer;display:inline-block;-webkit-tap-highlight-color:transparent}
+.vp,.tw{display:none}
+#vwc:checked~.ctl .vo{display:none}#vwc:checked~.ctl .vp{display:inline}
+@media (prefers-color-scheme:dark){.tb{display:none}.tw{display:inline}#thc:checked~.ctl .tb{display:inline}#thc:checked~.ctl .tw{display:none}}
+@media (prefers-color-scheme:light),(prefers-color-scheme:no-preference){#thc:checked~.ctl .tb{display:none}#thc:checked~.ctl .tw{display:inline}}
+@keyframes gltloop{0%,9%,100%{transform:none;clip-path:none;text-shadow:none}1%{transform:translate(-3px,1px) skewX(-8deg);text-shadow:3px 0 #ff2e93,-3px 0 #00e5ff}2.5%{transform:translate(4px,-1px) skewX(6deg);clip-path:inset(20% 0 40% 0);text-shadow:-4px 0 #ff2e93,4px 0 #00e5ff}4%{transform:translate(-2px,2px);clip-path:none;text-shadow:2px 0 #ff2e93,-2px 0 #00e5ff}5.5%{transform:translate(3px,0) skewX(-4deg);clip-path:inset(55% 0 10% 0);text-shadow:-3px 0 #ff2e93,3px 0 #00e5ff}7%{transform:translate(-1px,-1px);clip-path:none;text-shadow:1px 0 #ff2e93}}
+@keyframes bob{0%,100%{transform:translate(0,0) rotate(0)}15%{transform:translate(3px,-4px) rotate(.4deg)}30%{transform:translate(-3px,2px) rotate(-.5deg)}45%{transform:translate(4px,3px) rotate(.3deg)}60%{transform:translate(-2px,-4px) rotate(-.3deg)}61%{transform:translate(6px,2px) rotate(1deg)}62%{transform:translate(-5px,-2px) rotate(-1deg)}63%{transform:translate(0,0)}80%{transform:translate(2px,4px) rotate(.2deg)}}
+@media (prefers-reduced-motion:reduce){h1{animation:none}}
+</style>
+</head>
+<body>
+<input type="checkbox" id="vwc" class="chk" tabindex="-1" aria-hidden="true">
+<input type="checkbox" id="thc" class="chk" tabindex="-1" aria-hidden="true">
+<canvas id="bg" width="160" height="160"></canvas>
+<div class="sweep"></div>
+<div class="crt"></div>
+<div id="intro"><span class="i1">подключение</span><span class="i2">доступ разрешён</span></div>
+<div class="ctl">
+<label for="vwc" role="button" tabindex="0"><span class="vo">Вид: телефон</span><span class="vp">Вид: ПК</span></label>
+<label for="thc" role="button" tabindex="0"><span class="tb">Тема: чёрная</span><span class="tw">Тема: белая</span></label>
+</div>
+<input type="checkbox" id="tg" aria-hidden="true" tabindex="-1">
+<div class="stage">
+<div class="wrap" id="w">
+<h1 id="n"><label for="tg" role="button" tabindex="0" aria-controls="al">Meepo</label></h1>
+<div class="st"><i></i><span>в сети</span></div>
+<label class="dots" id="d" for="tg" role="button" tabindex="0" aria-expanded="false" aria-controls="al" aria-label="Другие псевдонимы"><i></i><i></i><i></i></label>
+<div class="al" id="al"><div class="in"><div class="lk"><a href="https://t.me/zontik2016" target="_blank" rel="noopener">Telegram</a><a href="https://discord.com/users/1505036886316421272" target="_blank" rel="noopener">Discord</a><a href="https://discord.gg/a6Z79Yv3Y9" target="_blank" rel="noopener">Discord<small>локалка</small></a></div></div></div>
+</div>
+</div>
+
+<script>
+var cv=document.getElementById('bg'),cx=cv.getContext('2d'),im=cx.createImageData(160,160);
+function nz(){var d=im.data;for(var i=0;i<d.length;i+=4){var v=Math.random()*255;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255}cx.putImageData(im,0,0)}
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){cv.style.display='none'}else{nz();setInterval(nz,90)}
+</script>
+</body>
+</html>
