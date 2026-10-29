@@ -7,20 +7,14 @@
 <style>
 :root{--bg:#fff;--ink:#000;--acc:#e0197d;--dim:#8a8a8a;--line:#d9d9d9;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root{--bg:#000;--ink:#fff;--acc:#ff4fa8;--dim:#8a8a8a;--line:#2a2a2a}:root:has(#thc:checked){--bg:#fff;--ink:#000;--acc:#e0197d;--dim:#8a8a8a;--line:#d9d9d9}}
-@media (prefers-color-scheme:light),(prefers-color-scheme:no-preference){:root:has(#thc:checked){--bg:#000;--ink:#fff;--acc:#ff4fa8;--dim:#8a8a8a;--line:#2a2a2a}}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--ink:#fff;--acc:#ff4fa8;--dim:#8a8a8a;--line:#2a2a2a}}
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
 *{box-sizing:border-box}
 body{margin:0;min-height:100%;background:radial-gradient(circle at 18% 22%,color-mix(in srgb,var(--acc) 38%,transparent),transparent 45%),radial-gradient(circle at 82% 78%,color-mix(in srgb,var(--acc) 24%,transparent),transparent 50%),var(--bg);color:var(--ink);font-family:"Trebuchet MS",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
-.ctl{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;display:flex;gap:8px;z-index:5}
-.ctl label{display:inline-block;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;font:700 13px "Trebuchet MS",system-ui,sans-serif;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:9px 14px;cursor:pointer}
-.ctl label:focus-visible,h1 label:focus-visible,.dots:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+h1 label:focus-visible,.dots:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .stage{width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 24px}
-body:has(#vwc:checked){padding:64px 12px 24px}
-#vwc:checked~.stage{width:390px;max-width:100%;height:760px;max-height:calc(100vh - 100px);min-height:0;border:2px solid var(--line);border-radius:38px}
 .wrap{min-width:min(272px,calc(100vw - 48px));display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 40px 22px;border-radius:30px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 h1{font:900 clamp(40px,11vw,72px)/.9 "Arial Black",Impact,sans-serif;letter-spacing:-.04em;margin:0}
-#vwc:checked~.stage h1{font-size:52px}
 h1{cursor:pointer;user-select:none;-webkit-user-select:none}
 h1:focus-visible{outline:3px solid var(--acc);outline-offset:6px;border-radius:8px}
 @keyframes glt{0%{transform:translate(-3px,1px) skewX(-8deg);text-shadow:3px 0 #ff2e93,-3px 0 #00e5ff}20%{transform:translate(4px,-1px) skewX(6deg);clip-path:inset(20% 0 40% 0);text-shadow:-4px 0 #ff2e93,4px 0 #00e5ff}40%{transform:translate(-2px,2px);clip-path:none;text-shadow:2px 0 #ff2e93,-2px 0 #00e5ff}60%{transform:translate(3px,0) skewX(-4deg);clip-path:inset(55% 0 10% 0);text-shadow:-3px 0 #ff2e93,3px 0 #00e5ff}80%{transform:translate(-1px,-1px);clip-path:none;text-shadow:1px 0 #ff2e93}100%{transform:none;clip-path:none;text-shadow:none}}
@@ -75,10 +69,6 @@ li{font:700 15px "Trebuchet MS",system-ui,sans-serif;color:var(--acc);opacity:0;
 #tg:checked~.stage li{opacity:1;transform:none}
 .chk{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
 h1 label{cursor:pointer;display:inline-block;-webkit-tap-highlight-color:transparent}
-.vp,.tw{display:none}
-#vwc:checked~.ctl .vo{display:none}#vwc:checked~.ctl .vp{display:inline}
-@media (prefers-color-scheme:dark){.tb{display:none}.tw{display:inline}#thc:checked~.ctl .tb{display:inline}#thc:checked~.ctl .tw{display:none}}
-@media (prefers-color-scheme:light),(prefers-color-scheme:no-preference){#thc:checked~.ctl .tb{display:none}#thc:checked~.ctl .tw{display:inline}}
 @keyframes gltloop{0%,9%,100%{transform:none;clip-path:none;text-shadow:none}1%{transform:translate(-3px,1px) skewX(-8deg);text-shadow:3px 0 #ff2e93,-3px 0 #00e5ff}2.5%{transform:translate(4px,-1px) skewX(6deg);clip-path:inset(20% 0 40% 0);text-shadow:-4px 0 #ff2e93,4px 0 #00e5ff}4%{transform:translate(-2px,2px);clip-path:none;text-shadow:2px 0 #ff2e93,-2px 0 #00e5ff}5.5%{transform:translate(3px,0) skewX(-4deg);clip-path:inset(55% 0 10% 0);text-shadow:-3px 0 #ff2e93,3px 0 #00e5ff}7%{transform:translate(-1px,-1px);clip-path:none;text-shadow:1px 0 #ff2e93}}
 @keyframes bob{0%,100%{transform:translate(0,0) rotate(0)}1%{transform:translate(-5px,2px) rotate(-.8deg)}2.5%{transform:translate(6px,-2px) rotate(.9deg)}4%{transform:translate(-3px,3px) rotate(-.4deg)}5.5%{transform:translate(4px,0) rotate(.5deg)}7%{transform:translate(-1px,-1px) rotate(0)}9%{transform:translate(0,0) rotate(0);animation-timing-function:ease-in-out}25%{transform:translate(3px,-4px) rotate(.4deg);animation-timing-function:ease-in-out}45%{transform:translate(-3px,2px) rotate(-.5deg);animation-timing-function:ease-in-out}65%{transform:translate(4px,3px) rotate(.3deg);animation-timing-function:ease-in-out}85%{transform:translate(-2px,-3px) rotate(-.3deg);animation-timing-function:ease-in-out}}
 @media (prefers-reduced-motion:reduce){h1{animation:none}}
@@ -98,19 +88,26 @@ h1 label{cursor:pointer;display:inline-block;-webkit-tap-highlight-color:transpa
 .rb.mine svg path{fill:currentColor;fill-opacity:.25}
 .rn{font-size:11px;opacity:.7;max-width:210px;margin-top:2px}
 .rn:empty{display:none}
+#words{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.w{position:absolute;white-space:nowrap;font:900 22px "Trebuchet MS",system-ui,sans-serif;letter-spacing:-.02em;color:var(--ink);opacity:0;animation:wf var(--d,3s) ease-in-out forwards;will-change:transform,opacity}
+.w.g{text-shadow:2px 0 #ff2e93,-2px 0 #00e5ff}
+@keyframes wf{0%{opacity:0;transform:translate(0,0) rotate(var(--r)) scale(.85);filter:blur(4px)}12%{opacity:var(--o);filter:blur(0)}70%{opacity:var(--o)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(calc(var(--r) + var(--dr))) scale(1.08);filter:blur(3px)}}
+.pl{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:5;display:flex;align-items:center;gap:10px;width:min(300px,calc(100vw - 28px));padding:7px 14px 7px 7px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--bg) 62%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font:700 12px "Trebuchet MS",system-ui,sans-serif;color:var(--ink)}
+.pl button{flex:none;width:34px;height:34px;border:0;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:0}
+.pl button:focus-visible,.pl input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.pl svg{width:14px;height:14px;fill:currentColor}
+.pl .ip{display:none}.pl.on .ip{display:block}.pl.on .iq{display:none}
+.pl input{flex:1;min-width:0;height:18px;accent-color:var(--acc);cursor:pointer;background:none}
+.pl span{flex:none;min-width:32px;text-align:right;font-variant-numeric:tabular-nums;opacity:.8}
+@media (prefers-reduced-motion:reduce){#words{display:none}}
 </style>
 </head>
 <body>
-<input type="checkbox" id="vwc" class="chk" tabindex="-1" aria-hidden="true">
-<input type="checkbox" id="thc" class="chk" tabindex="-1" aria-hidden="true">
 <canvas id="bg" width="160" height="160"></canvas>
+<div id="words" aria-hidden="true"></div>
 <div class="sweep"></div>
 <div class="crt"></div>
 <div id="intro"><span class="i1">подключение</span><span class="i2">доступ разрешён</span></div>
-<div class="ctl">
-<label for="vwc" role="button" tabindex="0"><span class="vo">Вид: телефон</span><span class="vp">Вид: ПК</span></label>
-<label for="thc" role="button" tabindex="0"><span class="tb">Тема: чёрная</span><span class="tw">Тема: белая</span></label>
-</div>
 <input type="checkbox" id="tg" aria-hidden="true" tabindex="-1">
 <div class="stage">
 <div class="wrap" id="w">
@@ -122,6 +119,8 @@ h1 label{cursor:pointer;display:inline-block;-webkit-tap-highlight-color:transpa
 </div>
 </div>
 
+<div class="pl" id="pl"><button type="button" id="pp" aria-label="Играть"><svg class="iq" viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z"/></svg><svg class="ip" viewBox="0 0 14 14"><path d="M2.5 1.5h3.2v11H2.5zM8.3 1.5h3.2v11H8.3z"/></svg></button><input type="range" id="sk" min="0" max="1000" value="0" aria-label="Перемотка"><span id="tm">0:00</span></div>
+<audio id="au" loop preload="metadata" src="track.mp3"></audio>
 <script>
 var cv=document.getElementById('bg'),cx=cv.getContext('2d'),im=cx.createImageData(160,160);
 function nz(){var d=im.data;for(var i=0;i<d.length;i+=4){var v=Math.random()*255;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255}cx.putImageData(im,0,0)}
@@ -143,6 +142,41 @@ function vote(v){up.disabled=dn.disabled=true;
 fetch('/api/rep',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({v:v})}).then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d}})}).then(function(x){if(x.d&&x.d.likes!==undefined)render(x.d);else{up.disabled=dn.disabled=false;rn.textContent='Не получилось, попробуй позже'}}).catch(function(){up.disabled=dn.disabled=false;rn.textContent='Не получилось, попробуй позже'})}
 up.addEventListener('click',function(){vote('like')});dn.addEventListener('click',function(){vote('dislike')});
 load();
+})();
+
+(function(){
+var au=document.getElementById('au'),pp=document.getElementById('pp'),sk=document.getElementById('sk'),tm=document.getElementById('tm'),pl=document.getElementById('pl'),wl=document.getElementById('words');
+if(!au||!pp)return;
+/* Моменты, когда в треке «звучит слово/удар» (секунды) */
+var T=[9.97,10.45,11.22,11.67,12.48,13.31,13.73,14.22,15.05,15.92,16.36,17.12,17.58,18.38,18.96,19.4,19.99,20.83,21.26,21.82,22.49,22.96,23.46,23.89,24.39,25.03,25.53,26.04,26.67,27.2,27.93,28.78,29.2,29.71,30.31,30.92,31.76,32.33,32.94,33.58,34.18,34.93,35.41,35.83,36.25,36.66,37.08,37.51,38.34,38.81,39.35,40.16,40.87,41.88,42.53,43.03,43.46,44.2,44.83,45.41,45.86,46.53,47.02,47.53,48.16,48.58,49.26,49.88,50.32,50.87,51.48,51.91,52.45,53.03,53.52,54.2,54.82,55.24,55.89,56.8,57.53,58.15,58.57,59.2,59.83,60.35,60.86,61.49,61.9,62.53,63.15,64.19,64.82,65.28,65.86,66.36,66.85,67.63,68.06,68.79,70.04,70.88,71.7,72.69,73.48,74.21,74.84,75.28,75.88,76.81,77.54,78.17,78.59,79.21,79.84,80.88,81.5,81.97,82.54,83.32,84.21,84.83,85.25,85.87,86.82,87.54,88.17,88.58,89.21,90.12,90.87,91.5,91.92,92.54,93.17,93.72,94.21,94.83,95.25,95.86,96.48,97.55,98.16,98.59,99.24,99.68];
+/* Текст, который всплывает на каждый момент. Впишите сюда свои слова по порядку, они будут идти по кругу. */
+var W=["meepo", "в сети", "signal", "online", "…", "glitch", "404", "reboot", "cyber", "tick", "ping", "on air"];
+var i=0,last=0,raf=0,seeking=false;
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function f(s){s=Math.floor(s||0);return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2)}
+function r(a,b){return a+Math.random()*(b-a)}
+function spawn(txt){
+if(rm||!wl)return;
+var e=document.createElement('span');e.className='w';e.textContent=txt;
+e.style.left=r(3,84)+'vw';e.style.top=r(6,84)+'vh';e.style.fontSize=r(15,48)+'px';
+e.style.setProperty('--r',r(-14,14)+'deg');e.style.setProperty('--dr',r(-18,18)+'deg');
+e.style.setProperty('--dx',r(-80,80)+'px');e.style.setProperty('--dy',r(-100,45)+'px');
+e.style.setProperty('--o',r(.35,.85).toFixed(2));e.style.setProperty('--d',r(2.2,4).toFixed(2)+'s');
+if(Math.random()<.25)e.className+=' g';
+e.addEventListener('animationend',function(){if(e.parentNode)e.parentNode.removeChild(e)});
+wl.appendChild(e);var wd=e.offsetWidth,mx=window.innerWidth-wd-70;if(e.offsetLeft>mx)e.style.left=Math.max(6,mx)+'px';while(wl.children.length>16)wl.removeChild(wl.firstChild)}
+function reseek(){var t=au.currentTime;i=0;while(i<T.length&&T[i]<=t)i++;last=t}
+function sync(){var t=au.currentTime;if(t<last-.5)i=0;last=t;
+while(i<T.length&&T[i]<=t){if(t-T[i]<.6)spawn(W[i%W.length]);i++}}
+function loop(){sync();raf=requestAnimationFrame(loop)}
+function ui(){tm.textContent=f(au.currentTime);if(!seeking&&au.duration)sk.value=Math.round(au.currentTime/au.duration*1000)}
+au.addEventListener('play',function(){pl.classList.add('on');pp.setAttribute('aria-label','Пауза');cancelAnimationFrame(raf);reseek();loop()});
+au.addEventListener('pause',function(){pl.classList.remove('on');pp.setAttribute('aria-label','Играть');cancelAnimationFrame(raf)});
+au.addEventListener('timeupdate',ui);
+au.addEventListener('seeked',reseek);
+pp.addEventListener('click',function(){if(au.paused){var p=au.play();if(p&&p.catch)p.catch(function(){})}else au.pause()});
+sk.addEventListener('input',function(){seeking=true;if(au.duration)au.currentTime=sk.value/1000*au.duration;tm.textContent=f(au.currentTime)});
+sk.addEventListener('change',function(){seeking=false});
 })();
 </script>
 </body>
