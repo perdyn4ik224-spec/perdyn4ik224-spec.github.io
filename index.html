@@ -89,7 +89,7 @@ h1 label{cursor:pointer;display:inline-block;-webkit-tap-highlight-color:transpa
 .rn{font-size:11px;opacity:.7;max-width:210px;margin-top:2px}
 .rn:empty{display:none}
 #words{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.w{position:absolute;white-space:nowrap;font:900 22px "Trebuchet MS",system-ui,sans-serif;letter-spacing:-.02em;color:var(--ink);opacity:0;animation:wf var(--d,3s) ease-in-out forwards;will-change:transform,opacity}
+.w{position:absolute;white-space:normal;max-width:84vw;text-align:center;font:900 22px "Trebuchet MS",system-ui,sans-serif;letter-spacing:-.02em;color:var(--ink);opacity:0;animation:wf var(--d,3s) ease-in-out forwards;will-change:transform,opacity}
 .w.g{text-shadow:2px 0 #ff2e93,-2px 0 #00e5ff}
 @keyframes wf{0%{opacity:0;transform:translate(0,0) rotate(var(--r)) scale(.85);filter:blur(4px)}12%{opacity:var(--o);filter:blur(0)}70%{opacity:var(--o)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(calc(var(--r) + var(--dr))) scale(1.08);filter:blur(3px)}}
 .pl{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:5;display:flex;align-items:center;gap:10px;width:min(300px,calc(100vw - 28px));padding:7px 14px 7px 7px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--bg) 62%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font:700 12px "Trebuchet MS",system-ui,sans-serif;color:var(--ink)}
@@ -100,6 +100,10 @@ h1 label{cursor:pointer;display:inline-block;-webkit-tap-highlight-color:transpa
 .pl input{flex:1;min-width:0;height:18px;accent-color:var(--acc);cursor:pointer;background:none}
 .pl span{flex:none;min-width:32px;text-align:right;font-variant-numeric:tabular-nums;opacity:.8}
 @media (prefers-reduced-motion:reduce){#words{display:none}}
+#sy{position:fixed;top:10px;left:50%;transform:translateX(-50%);width:min(430px,94vw);max-height:72vh;overflow:auto;z-index:30;background:rgba(0,0,0,.9);color:#fff;padding:12px 14px;border-radius:16px;font:13px/1.4 system-ui,sans-serif;text-align:left}
+#sy textarea{width:100%;box-sizing:border-box;margin:6px 0;font:13px/1.35 system-ui,sans-serif;background:#111;color:#fff;border:1px solid #444;border-radius:8px;padding:8px}
+#sy button{padding:12px 16px;font:700 15px system-ui,sans-serif;margin:4px 6px 0 0;border-radius:10px;border:0;background:#ff4fa8;color:#000;cursor:pointer}
+#sy button:disabled{opacity:.4}#sy #s1{padding:20px 34px;font-size:18px}#sy p{margin:4px 0;opacity:.8}#sn{margin:8px 0;font-weight:700;min-height:2.6em}
 </style>
 </head>
 <body>
@@ -150,29 +154,29 @@ if(!au||!pp)return;
 /* Моменты, когда в треке «звучит слово/удар» (секунды) */
 var T=[9.97,10.45,11.22,11.67,12.48,13.31,13.73,14.22,15.05,15.92,16.36,17.12,17.58,18.38,18.96,19.4,19.99,20.83,21.26,21.82,22.49,22.96,23.46,23.89,24.39,25.03,25.53,26.04,26.67,27.2,27.93,28.78,29.2,29.71,30.31,30.92,31.76,32.33,32.94,33.58,34.18,34.93,35.41,35.83,36.25,36.66,37.08,37.51,38.34,38.81,39.35,40.16,40.87,41.88,42.53,43.03,43.46,44.2,44.83,45.41,45.86,46.53,47.02,47.53,48.16,48.58,49.26,49.88,50.32,50.87,51.48,51.91,52.45,53.03,53.52,54.2,54.82,55.24,55.89,56.8,57.53,58.15,58.57,59.2,59.83,60.35,60.86,61.49,61.9,62.53,63.15,64.19,64.82,65.28,65.86,66.36,66.85,67.63,68.06,68.79,70.04,70.88,71.7,72.69,73.48,74.21,74.84,75.28,75.88,76.81,77.54,78.17,78.59,79.21,79.84,80.88,81.5,81.97,82.54,83.32,84.21,84.83,85.25,85.87,86.82,87.54,88.17,88.58,89.21,90.12,90.87,91.5,91.92,92.54,93.17,93.72,94.21,94.83,95.25,95.86,96.48,97.55,98.16,98.59,99.24,99.68];
 /* Текст, который всплывает на каждый момент. Впишите сюда свои слова по порядку, они будут идти по кругу. */
-var W=["meepo", "в сети", "signal", "online", "…", "glitch", "404", "reboot", "cyber", "tick", "ping", "Wave, wave, wave, wave
-Техника, вокруг дыханья
-У меня ща нет дыханья (Похуй!")
-Остаюсь в кругу реальных
-Волны ща качают здания
-Wave, wave, wave"];
+var ONS=T.slice();
+var W=["meepo", "в сети", "signal", "online", "…", "glitch", "404", "reboot", "cyber", "tick", "ping", "on air"];
+var TIMED=false;
+fetch('words.txt',{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){var a=t.split(/\r?\n/).map(function(x){return x.trim()}).filter(Boolean);if(a.length&&!TIMED)W=a}).catch(function(){});
+/* Точная привязка: файл lyrics.json со строками [[секунда,"текст"],...] (делается инструментом ?sync) */
+fetch('lyrics.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(a){if(!Array.isArray(a))return;a=a.filter(function(x){return x&&typeof x[0]==='number'&&x[1]}).sort(function(p,q){return p[0]-q[0]});if(!a.length)return;T=a.map(function(x){return x[0]});W=a.map(function(x){return String(x[1])});TIMED=true;reseek()}).catch(function(){});
 var i=0,last=0,raf=0,seeking=false;
 var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 function f(s){s=Math.floor(s||0);return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2)}
 function r(a,b){return a+Math.random()*(b-a)}
-function spawn(txt){
+function spawn(txt,dur){
 if(rm||!wl)return;
 var e=document.createElement('span');e.className='w';e.textContent=txt;
-e.style.left=r(3,84)+'vw';e.style.top=r(6,84)+'vh';e.style.fontSize=r(15,48)+'px';
+e.style.left=r(3,84)+'vw';e.style.top=r(6,84)+'vh';e.style.fontSize=(TIMED?Math.max(13,Math.min(r(17,34),3*window.innerWidth/Math.max(txt.length,1))):r(15,48))+'px';
 e.style.setProperty('--r',r(-14,14)+'deg');e.style.setProperty('--dr',r(-18,18)+'deg');
 e.style.setProperty('--dx',r(-80,80)+'px');e.style.setProperty('--dy',r(-100,45)+'px');
-e.style.setProperty('--o',r(.35,.85).toFixed(2));e.style.setProperty('--d',r(2.2,4).toFixed(2)+'s');
+e.style.setProperty('--o',r(.35,.85).toFixed(2));e.style.setProperty('--d',(dur||r(2.2,4)).toFixed(2)+'s');
 if(Math.random()<.25)e.className+=' g';
 e.addEventListener('animationend',function(){if(e.parentNode)e.parentNode.removeChild(e)});
 wl.appendChild(e);var wd=e.offsetWidth,mx=window.innerWidth-wd-70;if(e.offsetLeft>mx)e.style.left=Math.max(6,mx)+'px';while(wl.children.length>16)wl.removeChild(wl.firstChild)}
 function reseek(){var t=au.currentTime;i=0;while(i<T.length&&T[i]<=t)i++;last=t}
 function sync(){var t=au.currentTime;if(t<last-.5)i=0;last=t;
-while(i<T.length&&T[i]<=t){if(t-T[i]<.6)spawn(W[i%W.length]);i++}}
+while(i<T.length&&T[i]<=t){if(t-T[i]<.6)spawn(W[i%W.length],TIMED?Math.min(6,Math.max(1.8,(T[i+1]===undefined?4:T[i+1]-T[i])+.5)):0);i++}}
 function loop(){sync();raf=requestAnimationFrame(loop)}
 function ui(){tm.textContent=f(au.currentTime);if(!seeking&&au.duration)sk.value=Math.round(au.currentTime/au.duration*1000)}
 au.addEventListener('play',function(){pl.classList.add('on');pp.setAttribute('aria-label','Пауза');cancelAnimationFrame(raf);reseek();loop()});
@@ -182,6 +186,39 @@ au.addEventListener('seeked',reseek);
 pp.addEventListener('click',function(){if(au.paused){var p=au.play();if(p&&p.catch)p.catch(function(){})}else au.pause()});
 sk.addEventListener('input',function(){seeking=true;if(au.duration)au.currentTime=sk.value/1000*au.duration;tm.textContent=f(au.currentTime)});
 sk.addEventListener('change',function(){seeking=false});
+if(/[?&]sync\b/.test(location.search)){
+var p=document.createElement('div');p.id='sy';
+p.innerHTML='<b>Разметка текста по времени</b><p>Вставьте свой текст: одна фраза на строку. Без слуха: нажмите «Авто», затем «Просмотр» и при необходимости сдвиньте всё кнопками ±0,3 с. По слуху: «Старт» и «ТАП» на каждой строке (или Enter / пробел). В конце скопируйте результат в файл lyrics.json.</p><textarea id="sl" rows="5" placeholder="Вставьте строки сюда"></textarea><div><button type="button" id="sa">Авто</button><button type="button" id="sv" disabled>Просмотр</button><button type="button" id="sm" disabled>−0,3 с</button><button type="button" id="sp" disabled>+0,3 с</button></div><div><button type="button" id="s0">Старт</button><button type="button" id="s1" disabled>ТАП</button><button type="button" id="s2" disabled>Назад</button></div><div id="sn"></div><textarea id="so" rows="5" readonly placeholder="Здесь появится готовый lyrics.json"></textarea><button type="button" id="s3" disabled>Копировать</button>';
+document.body.appendChild(p);
+var sl=document.getElementById('sl'),so=document.getElementById('so'),sn=document.getElementById('sn'),s1=document.getElementById('s1'),s2=document.getElementById('s2'),s3=document.getElementById('s3');
+var L=[],R=[],k=0,LAG=.25;
+function out(){so.value='['+R.map(function(x){return JSON.stringify(x)}).join(',\n')+']';s3.disabled=!R.length}
+function show(){sn.textContent=k<L.length?'Дальше ('+(k+1)+'/'+L.length+'): '+L[k]:'Готово: скопируйте результат ниже'}
+function tap(){if(k>=L.length||au.paused)return;R.push([+Math.max(0,au.currentTime-LAG).toFixed(2),L[k]]);k++;show();out()}
+document.getElementById('s0').addEventListener('click',function(){L=sl.value.split(/\r?\n/).map(function(x){return x.trim()}).filter(Boolean);if(!L.length)return;R=[];k=0;out();s1.disabled=s2.disabled=false;au.currentTime=0;var q=au.play();if(q&&q.catch)q.catch(function(){});show();if(document.activeElement)document.activeElement.blur()});
+var sa=document.getElementById('sa'),sv=document.getElementById('sv'),sm=document.getElementById('sm'),sp=document.getElementById('sp');
+var ACT=[[9.9,68.18],[69.66,99.72]];
+function autoMap(lines){
+var tot=0,j;for(j=0;j<ACT.length;j++)tot+=ACT[j][1]-ACT[j][0];
+var wt=lines.map(function(l){return l.replace(/[^a-zа-яё0-9]/gi,'').length+3}),sum=0;wt.forEach(function(w){sum+=w});
+var cum=0,res=[],prev=-9;
+lines.forEach(function(l,n){var off=cum/sum*tot,abs=ACT[0][0],g;
+for(g=0;g<ACT.length;g++){var len=ACT[g][1]-ACT[g][0];if(off<len||g===ACT.length-1){abs=ACT[g][0]+Math.min(off,len);break}off-=len}
+var best=abs,d=.4;ONS.forEach(function(o){var dd=Math.abs(o-abs);if(dd<d){d=dd;best=o}});
+if(best<=prev+.5)best=Math.max(abs,prev+.5);
+prev=best;res.push([+best.toFixed(2),l]);cum+=wt[n]});
+return res}
+function apply(){if(!R.length)return;T=R.map(function(x){return x[0]});W=R.map(function(x){return x[1]});TIMED=true;reseek()}
+function enable(){sv.disabled=sm.disabled=sp.disabled=false}
+sa.addEventListener('click',function(){L=sl.value.split(/\r?\n/).map(function(x){return x.trim()}).filter(Boolean);if(!L.length)return;R=autoMap(L);k=L.length;out();enable();sn.textContent='Авто: расставлено строк — '+R.length+'. Нажмите «Просмотр».'});
+sv.addEventListener('click',function(){apply();au.currentTime=Math.max(0,R[0][0]-1.5);var q=au.play();if(q&&q.catch)q.catch(function(){})});
+function shift(d){R=R.map(function(x){return[+Math.max(0,x[0]+d).toFixed(2),x[1]]});out();apply()}
+sm.addEventListener('click',function(){shift(-.3)});sp.addEventListener('click',function(){shift(.3)});
+s1.addEventListener('pointerdown',function(e){e.preventDefault();tap()});
+s2.addEventListener('click',function(){if(R.length){R.pop();k--;show();out()}});
+s3.addEventListener('click',function(){so.select();try{navigator.clipboard.writeText(so.value)}catch(e){document.execCommand('copy')}s3.textContent='Скопировано'});
+document.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&!/^(TEXTAREA|BUTTON|INPUT)$/.test(e.target.tagName)){e.preventDefault();tap()}});
+}
 })();
 </script>
 </body>
