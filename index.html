@@ -4,6 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Meepo</title>
+<script>
+/* диагностика: открыть сайт с ?debug в конце адреса */
+(function(){if(!/[?&]debug\b/.test(location.search))return;
+var errs=[];window.addEventListener('error',function(e){errs.push((e.message||'ошибка')+' (строка '+(e.lineno||'?')+')')});
+window.addEventListener('load',function(){setTimeout(function(){
+var box=document.createElement('pre');box.style.cssText='position:fixed;left:8px;right:8px;top:8px;z-index:99;max-height:70vh;overflow:auto;margin:0;padding:10px;background:rgba(0,0,0,.92);color:#9f9;font:12px/1.4 monospace;white-space:pre-wrap;border-radius:10px';
+document.body.appendChild(box);function add(t){box.textContent+=t+'\n'}
+add('ДИАГНОСТИКА');
+add('ошибки скрипта: '+(errs.length?errs.join(' | '):'нет'));
+var b=document.getElementById('bar');add('кнопки лайков: '+(b?(b.classList.contains('on')?'показаны':'скрыты (нет ответа от /api/rep)'):'блока нет в странице'));
+var au=document.getElementById('au');add('плеер: '+(au?('readyState '+au.readyState+', длительность '+(isFinite(au.duration)?au.duration.toFixed(1):'нет')+', ошибка '+(au.error?au.error.code:'нет')):'аудио-элемента нет'));
+fetch('/api/rep',{cache:'no-store'}).then(function(r){return r.text().then(function(t){add('/api/rep: '+r.status+' '+t.slice(0,90))})}).catch(function(e){add('/api/rep: сеть '+e)});
+fetch('track.mp3',{method:'HEAD'}).then(function(r){add('track.mp3: '+r.status+' '+(r.headers.get('content-length')||''))}).catch(function(e){add('track.mp3: сеть '+e)});
+['lyrics.json','words.txt'].forEach(function(f){fetch(f,{method:'HEAD',cache:'no-store'}).then(function(r){add(f+': '+(r.ok?'есть':'нет ('+r.status+')'))}).catch(function(){add(f+': нет')})});
+},1500)})})();
+</script>
 <style>
 :root{--bg:#fff;--ink:#000;--acc:#e0197d;--dim:#8a8a8a;--line:#d9d9d9;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -13,7 +29,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
 body{margin:0;min-height:100%;background:radial-gradient(circle at 18% 22%,color-mix(in srgb,var(--acc) 38%,transparent),transparent 45%),radial-gradient(circle at 82% 78%,color-mix(in srgb,var(--acc) 24%,transparent),transparent 50%),var(--bg);color:var(--ink);font-family:"Trebuchet MS",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s}
 h1 label:focus-visible,.dots:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .stage{width:100%;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 24px}
-.wrap{min-width:min(272px,calc(100vw - 48px));display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 40px 22px;border-radius:30px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.wrap{min-width:min(300px,calc(100vw - 48px));display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 40px 22px;border-radius:30px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 h1{font:900 clamp(40px,11vw,72px)/.9 "Arial Black",Impact,sans-serif;letter-spacing:-.04em;margin:0}
 h1{cursor:pointer;user-select:none;-webkit-user-select:none}
 h1:focus-visible{outline:3px solid var(--acc);outline-offset:6px;border-radius:8px}
@@ -28,10 +44,10 @@ ul{list-style:none;margin:0 auto;padding:0;display:flex;flex-wrap:wrap;justify-c
 .in{overflow:hidden;min-height:0;visibility:hidden;transition:visibility 0s .4s}
 .wrap.open .in{visibility:visible;transition-delay:0s}
 .lk{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin-top:12px;opacity:0;transition:opacity .3s .2s}
-.lk a:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 4px)}
+.lk a:nth-last-child(2):nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 4px)}
 .wrap.open .lk{opacity:1}
-.lk a{font:700 13px "Trebuchet MS",system-ui,sans-serif;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 6px;min-width:0;text-align:center}
-.lk a:hover{border-color:var(--acc);color:var(--acc)}
+.lk a,.lk .cb{font:700 13px "Trebuchet MS",system-ui,sans-serif;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 6px;min-width:0;text-align:center;background:none}
+.lk a:hover,.lk .cb:hover{border-color:var(--acc);color:var(--acc)}
 .lk a small{display:block;font-weight:400;font-size:10px;line-height:1.2;opacity:.65}
 #bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.09;image-rendering:pixelated}
 .crt{position:fixed;inset:0;z-index:4;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,color-mix(in srgb,var(--ink) 6%,transparent) 2px 3px)}
@@ -51,7 +67,7 @@ ul{list-style:none;margin:0 auto;padding:0;display:flex;flex-wrap:wrap;justify-c
 @keyframes i2{from,to{opacity:1}}
 @keyframes introOut{to{opacity:0;visibility:hidden;pointer-events:none}}
 @media (prefers-reduced-motion:reduce){#intro{display:none}.sweep{display:none}.st i{animation:none}}
-.lk a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.lk a:focus-visible,.lk .cb:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 li{font:700 15px "Trebuchet MS",system-ui,sans-serif;color:var(--acc);opacity:0;transform:translateY(-6px);transition:opacity .3s,transform .3s}
 .wrap.open li{opacity:1;transform:none}
 .wrap.open li:nth-child(2){transition-delay:.06s}
@@ -104,6 +120,36 @@ h1 label{cursor:pointer;display:inline-block;-webkit-tap-highlight-color:transpa
 #sy textarea{width:100%;box-sizing:border-box;margin:6px 0;font:13px/1.35 system-ui,sans-serif;background:#111;color:#fff;border:1px solid #444;border-radius:8px;padding:8px}
 #sy button{padding:12px 16px;font:700 15px system-ui,sans-serif;margin:4px 6px 0 0;border-radius:10px;border:0;background:#ff4fa8;color:#000;cursor:pointer}
 #sy button:disabled{opacity:.4}#sy #s1{padding:20px 34px;font-size:18px}#sy p{margin:4px 0;opacity:.8}#sn{margin:8px 0;font-weight:700;min-height:2.6em}
+.lk .cb{grid-column:1/-1;position:relative;cursor:pointer;padding:10px 34px 10px 10px;font-size:12px;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.lk .cb[hidden]{display:none}
+.lk .cb svg{position:absolute;right:13px;top:50%;width:19px;height:19px;margin-top:-9.5px;color:var(--acc);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#cmw,#cad{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#cad{z-index:60;background:rgba(0,0,0,.82)}
+#cmw[hidden],#cad[hidden]{display:none}
+.cms{width:min(440px,100%);max-height:min(82vh,660px);display:flex;flex-direction:column;border-radius:26px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 90%,transparent);color:var(--ink);font:14px/1.4 "Trebuchet MS",system-ui,sans-serif;overflow:hidden;text-align:left}
+.cmh{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 8px}
+.cmh b{font-size:16px}
+.cmh button{border:1px solid var(--line);background:none;color:var(--ink);border-radius:999px;width:34px;height:34px;font-size:15px;cursor:pointer}
+.cml{overflow:auto;padding:0 18px;flex:1 1 auto;min-height:56px}
+.ci{padding:10px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.ci:last-child{border-bottom:0}
+.ci i{font-style:normal;font-weight:700;color:var(--acc);font-size:13px}
+.ci small{opacity:.55;margin-left:6px;font-size:11px}
+.ci p{margin:3px 0 0}
+.ci .cx{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.cmem{opacity:.6;padding:14px 0}
+.cmf{padding:10px 18px 18px;border-top:1px solid var(--line)}
+.cmf input,.cmf textarea,#cad input{width:100%;box-sizing:border-box;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font:16px/1.3 "Trebuchet MS",system-ui,sans-serif;margin-bottom:8px;resize:none}
+.cmf input:focus,.cmf textarea:focus,#cad input:focus{outline:2px solid var(--acc);outline-offset:1px}
+.cmr{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cmr span{opacity:.55;font-size:12px}
+.cms button.pb{font:700 13px "Trebuchet MS",system-ui,sans-serif;color:var(--ink);background:none;border:1px solid var(--acc);border-radius:999px;padding:9px 18px;cursor:pointer}
+.cms button.pb:disabled{opacity:.4;cursor:default}
+.cms button.sb{font:700 12px "Trebuchet MS",system-ui,sans-serif;color:var(--ink);background:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+.cms button.sb:hover{border-color:var(--acc);color:var(--acc)}
+#cmm{margin-top:8px;font-size:12.5px;min-height:1.2em}
+.cmtab{display:flex;gap:8px;padding:0 18px 8px}
+@media (max-width:350px){.lk .cb{font-size:10.5px;padding-right:32px}}
 </style>
 </head>
 <body>
@@ -119,12 +165,14 @@ h1 label{cursor:pointer;display:inline-block;-webkit-tap-highlight-color:transpa
 <div class="st"><i></i><span>в сети</span></div>
 <div class="bar" id="bar"><button type="button" class="rb up" id="up" aria-label="Лайк"><svg viewBox="0 0 28 30" aria-hidden="true"><path d="M3 14.2 8.6 13.6 8.1 27.4 2.7 27.9Z"/><path d="M8.7 14C12.3 11.2 13.6 7.6 13.9 3.7 14 2.4 16.3 2.5 16.9 4.2 17.7 7 16.6 9.7 15.7 11.7L24.1 11.3C26.4 11.5 27 13.3 26 14.9 27 16.3 26.5 18 25.3 18.8 26 20.3 25.4 21.9 24 22.6 24.4 24.2 23.5 25.7 21.8 25.8L12.5 26.8C10.7 27 9.5 26.5 8.2 25.7Z"/></svg><span id="lc">0</span></button><label class="dots" id="d" for="tg" role="button" tabindex="0" aria-expanded="false" aria-controls="al" aria-label="Другие псевдонимы"><i></i><i></i><i></i></label><button type="button" class="rb dn" id="dn" aria-label="Дизлайк"><svg viewBox="0 0 28 30" aria-hidden="true" style="transform:rotate(180deg)"><path d="M3 14.2 8.6 13.6 8.1 27.4 2.7 27.9Z"/><path d="M8.7 14C12.3 11.2 13.6 7.6 13.9 3.7 14 2.4 16.3 2.5 16.9 4.2 17.7 7 16.6 9.7 15.7 11.7L24.1 11.3C26.4 11.5 27 13.3 26 14.9 27 16.3 26.5 18 25.3 18.8 26 20.3 25.4 21.9 24 22.6 24.4 24.2 23.5 25.7 21.8 25.8L12.5 26.8C10.7 27 9.5 26.5 8.2 25.7Z"/></svg><span id="dc">0</span></button></div>
 <div class="rn" id="rn" aria-live="polite"></div>
-<div class="al" id="al"><div class="in"><div class="lk"><a href="https://t.me/zontik2016" target="_blank" rel="noopener">Telegram</a><a href="https://discord.com/users/1505036886316421272" target="_blank" rel="noopener">Discord</a><a href="https://discord.gg/a6Z79Yv3Y9" target="_blank" rel="noopener">Discord<small>локалка</small></a></div></div></div>
+<div class="al" id="al"><div class="in"><div class="lk"><a href="https://t.me/zontik2016" target="_blank" rel="noopener">Telegram</a><a href="https://discord.com/users/1505036886316421272" target="_blank" rel="noopener">Discord</a><a href="https://discord.gg/a6Z79Yv3Y9" target="_blank" rel="noopener">Discord<small>локалка</small></a><button type="button" class="cb" id="cb" hidden><span>Оставить комментарий</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H10l-4 3.5V17H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M12 8v6M9 11h6"/></svg></button></div></div></div>
 </div>
 </div>
 
 <div class="pl" id="pl"><button type="button" id="pp" aria-label="Играть"><svg class="iq" viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z"/></svg><svg class="ip" viewBox="0 0 14 14"><path d="M2.5 1.5h3.2v11H2.5zM8.3 1.5h3.2v11H8.3z"/></svg></button><input type="range" id="sk" min="0" max="1000" value="0" aria-label="Перемотка"><span id="tm">0:00</span></div>
 <audio id="au" loop preload="metadata" src="track.mp3"></audio>
+<div id="cmw" hidden role="dialog" aria-modal="true" aria-label="Комментарии"><div class="cms"><div class="cmh"><b>Комментарии</b><button type="button" id="cmx" aria-label="Закрыть">✕</button></div><div class="cml" id="cml"></div><div class="cmf"><input id="cmn" maxlength="24" placeholder="Имя (необязательно)" autocomplete="off"><textarea id="cmt" maxlength="300" rows="3" placeholder="Ваш комментарий"></textarea><div class="cmr"><span id="cmc">0/300</span><button type="button" class="pb" id="cmsend">Отправить</button></div><div id="cmm" aria-live="polite"></div></div></div></div>
+<div id="cad" hidden role="dialog" aria-modal="true" aria-label="Админ"><div class="cms"><div class="cmh"><b>Админ: комментарии</b><button type="button" id="cax" aria-label="Закрыть">✕</button></div><div id="cal" class="cml"><input id="cac" type="password" placeholder="Код администратора" autocomplete="off"><button type="button" class="pb" id="cago">Войти</button><div id="cam" style="margin-top:8px;font-size:12.5px;min-height:1.2em"></div></div></div></div>
 <script>
 var cv=document.getElementById('bg'),cx=cv.getContext('2d'),im=cx.createImageData(160,160);
 function nz(){var d=im.data;for(var i=0;i<d.length;i+=4){var v=Math.random()*255;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255}cx.putImageData(im,0,0)}
@@ -219,6 +267,52 @@ s2.addEventListener('click',function(){if(R.length){R.pop();k--;show();out()}});
 s3.addEventListener('click',function(){so.select();try{navigator.clipboard.writeText(so.value)}catch(e){document.execCommand('copy')}s3.textContent='Скопировано'});
 document.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&!/^(TEXTAREA|BUTTON|INPUT)$/.test(e.target.tagName)){e.preventDefault();tap()}});
 }
+})();
+</script>
+<script>
+/* комментарии и админ-панель (?comad) */
+(function(){
+var $=function(i){return document.getElementById(i)};
+var cb=$('cb'),w=$('cmw'),cml=$('cml'),cmn=$('cmn'),cmt=$('cmt'),cmc=$('cmc'),cmm=$('cmm'),send=$('cmsend'),tm=null,end=0;
+if(!cb||!w||!window.fetch)return;
+function api(method,body,hdr){var o={method:method,cache:'no-store',headers:{'Content-Type':'application/json'}};if(hdr)for(var k in hdr)o.headers[k]=hdr[k];if(body)o.body=JSON.stringify(body);return fetch('/api/comments',o).then(function(r){return r.json().catch(function(){return{}}).then(function(d){return{s:r.status,d:d}})})}
+function ago(ts){var m=Math.floor((Date.now()-ts)/60000);if(m<1)return'только что';if(m<60)return m+' мин назад';var h=Math.floor(m/60);if(h<24)return h+' ч назад';return Math.floor(h/24)+' дн назад'}
+function left(sec){var h=Math.floor(sec/3600),m=Math.ceil((sec-h*3600)/60);if(m===60){h++;m=0}return(h?h+' ч ':'')+m+' мин'}
+function item(c,btns){var d=document.createElement('div');d.className='ci';var n=document.createElement('i');n.textContent=c.name;var t=document.createElement('small');t.textContent=ago(c.ts);var p=document.createElement('p');p.textContent=c.text;d.appendChild(n);d.appendChild(t);d.appendChild(p);if(btns){var x=document.createElement('div');x.className='cx';btns.forEach(function(b){var e=document.createElement('button');e.type='button';e.className='sb';e.textContent=b[0];e.addEventListener('click',function(){b[1](c)});x.appendChild(e)});d.appendChild(x)}return d}
+function renderList(list){cml.textContent='';if(!list.length){var e=document.createElement('div');e.className='cmem';e.textContent='Пока нет комментариев. Будьте первым!';cml.appendChild(e);return}list.forEach(function(c){cml.appendChild(item(c))})}
+function cd(sec){clearInterval(tm);if(sec>0){end=Date.now()+sec*1000;send.disabled=true;var f=function(){var l=Math.round((end-Date.now())/1000);if(l<=0){clearInterval(tm);send.disabled=false;if(/Следующий/.test(cmm.textContent))cmm.textContent='';return}cmm.textContent='Следующий комментарий через '+left(l)};f();tm=setInterval(f,20000)}else{send.disabled=false}}
+function load(){return api('GET').then(function(x){if(x.s!==200||!x.d||!x.d.comments)throw 0;renderList(x.d.comments);cb.hidden=false;if(!/Отправлено|Спасибо/.test(cmm.textContent))cd(x.d.retryAfter||0)}).catch(function(){})}
+function open(){w.hidden=false;load();setTimeout(function(){cmt.focus()},60)}
+function close(){w.hidden=true}
+cb.addEventListener('click',open);$('cmx').addEventListener('click',close);
+w.addEventListener('click',function(e){if(e.target===w)close()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){close();ad.hidden=true}});
+cmt.addEventListener('input',function(){cmc.textContent=cmt.value.length+'/300'});
+send.addEventListener('click',function(){var text=cmt.value.trim();if(text.length<2){cmm.textContent='Напишите хотя бы пару символов';return}send.disabled=true;cmm.textContent='Отправляю…';
+api('POST',{name:cmn.value,text:text}).then(function(x){if(x.s===200&&x.d.ok){cmt.value='';cmc.textContent='0/300';cmm.textContent=x.d.pending?'Спасибо! Комментарий появится после проверки.':'Отправлено!';cd(x.d.retryAfter||0);setTimeout(function(){cmm.textContent=(x.d.pending?'Спасибо! Комментарий появится после проверки.':'Отправлено!')+' Следующий комментарий через '+left(x.d.retryAfter||0)},2500);return load()}
+if(x.s===429&&x.d.error==='cooldown'){cmm.textContent='';cd(x.d.retryAfter||0);return}
+if(x.s===429){send.disabled=false;cmm.textContent='Сейчас много комментариев на проверке, попробуйте позже';return}
+send.disabled=false;cmm.textContent=x.s===400?'Слишком короткий комментарий':'Не получилось, попробуйте позже'}).catch(function(){send.disabled=false;cmm.textContent='Не получилось, попробуйте позже'})});
+load();
+/* админ */
+var ad=$('cad');if(!/[?&]comad\b/.test(location.search)||!ad)return;
+var cal=$('cal'),code='';ad.hidden=false;
+$('cax').addEventListener('click',function(){ad.hidden=true});
+function msg(t){var m=$('cam');if(m)m.textContent=t}
+function act(a,id){return api('POST',{action:a,id:id},{'x-admin-code':code}).then(function(){return refresh()})}
+function section(title,list,btns){var h=document.createElement('div');h.className='cmtab';var b=document.createElement('b');b.textContent=title+' ('+list.length+')';h.appendChild(b);cal.appendChild(h);if(!list.length){var e=document.createElement('div');e.className='cmem';e.textContent='Пусто';cal.appendChild(e)}list.forEach(function(c){cal.appendChild(item(c,btns))})}
+function refresh(){return api('POST',{action:'list'},{'x-admin-code':code}).then(function(x){
+if(x.s===401){code='';login('Неверный код');return}
+if(x.s===429){login('Слишком много попыток, подождите 15 минут');return}
+if(x.s===503){login('На сервере не задан ADMIN_CODE (Vercel → Environment Variables)');return}
+if(x.s!==200){login('Ошибка сервера, попробуйте позже');return}
+cal.textContent='';var top=document.createElement('div');top.className='cmtab';var rb=document.createElement('button');rb.type='button';rb.className='sb';rb.textContent='Обновить';rb.addEventListener('click',refresh);top.appendChild(rb);cal.appendChild(top);
+section('На проверке',x.d.pending,[['Одобрить',function(c){act('approve',c.id)}],['Отклонить',function(c){act('reject',c.id)}]]);
+section('Опубликованные',x.d.approved,[['Удалить',function(c){act('delete',c.id)}]])})}
+function login(m){cal.textContent='';var i=document.createElement('input');i.type='password';i.id='cac';i.placeholder='Код администратора';i.autocomplete='off';var b=document.createElement('button');b.type='button';b.className='pb';b.id='cago';b.textContent='Войти';var d=document.createElement('div');d.id='cam';d.style.cssText='margin-top:8px;font-size:12.5px;min-height:1.2em';d.textContent=m||'';cal.appendChild(i);cal.appendChild(b);cal.appendChild(d);
+var go=function(){code=i.value;if(code)refresh()};b.addEventListener('click',go);i.addEventListener('keydown',function(e){if(e.key==='Enter')go()})}
+$('cago').addEventListener('click',function(){code=$('cac').value;if(code)refresh()});
+$('cac').addEventListener('keydown',function(e){if(e.key==='Enter'){code=$('cac').value;if(code)refresh()}});
 })();
 </script>
 </body>
