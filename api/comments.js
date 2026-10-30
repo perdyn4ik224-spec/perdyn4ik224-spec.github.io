@@ -7,7 +7,7 @@ const crypto = require('crypto');
 
 const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-const ADMIN = process.env.ADMIN_CODE || '';
+const ADMIN = process.env.ADMIN_CODE || '2150';
 const AUTO = process.env.COMMENT_AUTO_APPROVE === '1';
 const COOLDOWN = 12 * 60 * 60; // 12 часов
 const MAX_TEXT = 300, MAX_NAME = 24, MAX_WAIT = 200, SHOW = 30, ADMIN_LIST = 100;
